@@ -1,0 +1,30 @@
+
+Sound	Changed sound to not actually call the dos functions 
+	sound\nosound and removed the header dos.h
+
+Monitor Is the code called when the home key is pressed
+
+Opcodes	Is just a helper for the print register debug function no changes required
+
+Main	Does nothing out of the ordinary
+
+Address Does nothing which requires changing. But there is room for optimisation
+
+Io_read	 Assumes that the current_key things are setup correctly.
+
+-------------
+
+Scroll	Purely for the graphical scrolling of a screen
+
+Screen	Is the whole graphics system and text system. This should be split into
+	two subsystems
+
+Misc	Does a lot of useless stuff like show the startup screen but also
+	has the overall initialisation function
+
+IRQ	Does the irq function correctly, but also calls 'getkey'
+        This has to setup the keys correctly.
+
+Io_write Trys to change the pallette, flash, update screen and do stuff with
+         the cursor.
+
