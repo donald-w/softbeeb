@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <conio.h>
-#include <bios.h>
-#include <dos.h>
+#include "tc_conio.h"
+#include "tc_bios.h"
+#include "tc_dos.h"
 #include "header.h"
 #include "io.h"
 #include "reg_name.h"
@@ -173,7 +173,7 @@ void getkey(void) {
 				case '|':	current_key=0x78;SHIFT;break;
 				case '}':	current_key=0x58;SHIFT;break;
 				case '~':	current_key=0x18;SHIFT;break;
-				case 'œ':	current_key=0x28;SHIFT;break;
+				case 'ï¿½':	current_key=0x28;SHIFT;break;
 
 				case 0: switch(pc_scan_code/0x100) {
 

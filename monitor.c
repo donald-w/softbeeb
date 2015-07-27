@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <conio.h>
-#include <dos.h>
+#include "tc_conio.h"
+#include "tc_dos.h"
 #include <stdlib.h>
-#include <graphics.h>
+#include "tc_graphics.h"
 #include <ctype.h>
 #include "header.h"
 #include "io.h"

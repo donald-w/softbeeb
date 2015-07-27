@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <graphics.h>
+#include "tc_graphics.h"
 #include "header.h"
 #include "screen.h"
 #include "reg_name.h"

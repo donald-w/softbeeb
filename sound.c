@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include "header.h"
 #include "io.h"
-
-/* #include <dos.h> */
+#include "tc_dos.h"
 
 
 void get_vol(ubyte iobyte);       // prototypes for sound functions
@@ -79,10 +78,10 @@ void update_sound(void) {
 	}
 
   if (totvol==0) {        // if no channels are turned on, switch off
-	/*	nosound(); */         // all sound
+	    nosound();        // all sound
 		return;
   }
 
 	totfreq/=totvol;       // normalise sound
-	/* sound(totfreq); */        // and generate it
+	sound(totfreq);        // and generate it
 }

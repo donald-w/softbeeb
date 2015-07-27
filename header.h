@@ -1,3 +1,6 @@
+#ifndef SOFTBEEB_HEADER_H
+#define SOFTBEEB_HEADER_H
+
 // Standard type definitions
 
 	typedef unsigned char ubyte;
@@ -90,3 +93,5 @@
 	extern ubyte carry_f;              //
 	extern ubyte except;
 // _______________________
+
+#endif // SOFTBEEB_HEADER_H

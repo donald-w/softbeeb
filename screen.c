@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
-#include <graphics.h>
-#include <dos.h>
+#include "tc_conio.h"
+#include "tc_graphics.h"
+#include "tc_dos.h"
 #include "header.h"
 #include "screen.h"
 #include "io.h"
@@ -44,16 +44,16 @@ switch(iobyte) {                 // convert pc characters to teletext
 											// characters
 	case '_':	iobyte='#'   ;break;
 	case '[':   iobyte='\x1B';break; // some of these conversion are not
-	case '\\':	iobyte='«';   break; // stricly correct, since no corresponding
+	case '\\':	iobyte='ï¿½';   break; // stricly correct, since no corresponding
 	case ']':   iobyte='\x1A';break; // character in the pc set exists
 	case '^':   iobyte='\x18';break; //
-	case '`':	iobyte='Ä'   ;break; // notably the } characters is not
-	case '#':	iobyte='œ'   ;break; // converted to the proper 3/4 symbol
-	case '{':	iobyte='¬'   ;break;
-	case '|':	iobyte='º'   ;break;
+	case '`':	iobyte='ï¿½'   ;break; // notably the } characters is not
+	case '#':	iobyte='ï¿½'   ;break; // converted to the proper 3/4 symbol
+	case '{':	iobyte='ï¿½'   ;break;
+	case '|':	iobyte='ï¿½'   ;break;
 	case '}':	iobyte='}'   ;break;
-	case '~':	iobyte='ö'   ;break;
-	case 0x7F:	iobyte='Û'   ;break; // This conversion takes place because
+	case '~':	iobyte='ï¿½'   ;break;
+	case 0x7F:	iobyte='ï¿½'   ;break; // This conversion takes place because
 											// 0x7F is used for the cursor when
 											// copying
 }

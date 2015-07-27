@@ -1,0 +1,4 @@
+#ifndef SOFTBEEB_TC_CONIO_H
+#define SOFTBEEB_TC_CONIO_H
+
+#endif //SOFTBEEB_TC_CONIO_H

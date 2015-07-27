@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <conio.h>
+#include "tc_conio.h"
 #include <stdlib.h>
 #include "header.h"
 

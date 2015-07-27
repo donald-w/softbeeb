@@ -1,0 +1,4 @@
+#ifndef SOFTBEEB_TC_BIOS_H
+#define SOFTBEEB_TC_BIOS_H
+
+#endif //SOFTBEEB_TC_BIOS_H

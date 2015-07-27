@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <dos.h>
-#include <conio.h>
-#include <graphics.h>
-#include <alloc.h>
+#include "tc_dos.h"
+#include "tc_conio.h"
+#include "tc_graphics.h"
+#include "tc_alloc.h"
 #include "header.h"
 #include "screen.h"
 #include "mnemonic.h"
