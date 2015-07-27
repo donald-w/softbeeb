@@ -1,6 +1,8 @@
 #ifndef SOFTBEEB_HEADER_H
 #define SOFTBEEB_HEADER_H
 
+#include <stdio.h>
+
 // Standard type definitions
 
 	typedef unsigned char ubyte;

@@ -13,7 +13,9 @@ ubyte debuginfo=0;
 
 ubyte pic_temp_ram[0x8000];
 
-char far *graph_ptr;
+
+//char far *graph_ptr;
+char *graph_ptr;
 
 void titlepic(void);
 FILE *output;
@@ -113,7 +115,7 @@ void titlepic(void)	{                     // the title picture display
 
 	if ((title=fopen("data\\title.bmp","rb"))==NULL) {
 		printf("Titlepic fileopen Error");
-		getch();                            // open the picture file
+		coniogetch();                            // open the picture file
 		exit(1);
 	};
 
@@ -151,7 +153,7 @@ void titlepic(void)	{                     // the title picture display
 				putpixel(horz+3,vvert,pic_temp_ram[c]&0xF);
 				vvert++;
 			}
-		if (kbhit()) {getch(); return;}  // wait for keypress
+		if (kbhit()) {coniogetch(); return;}  // wait for keypress
 		}
 	}
 
@@ -168,6 +170,6 @@ void titlepic(void)	{                     // the title picture display
 			setrgbpalette(15,red,green,blue);
 			setpalette(15,15);
 			delay(10);                        // delay deliberately
-			if (kbhit()) {getch(); return;}   // until keypressed
+			if (kbhit()) {coniogetch(); return;}   // until keypressed
 			}
 }

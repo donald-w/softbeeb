@@ -44,16 +44,16 @@ switch(iobyte) {                 // convert pc characters to teletext
 											// characters
 	case '_':	iobyte='#'   ;break;
 	case '[':   iobyte='\x1B';break; // some of these conversion are not
-	case '\\':	iobyte='�';   break; // stricly correct, since no corresponding
+	case '\\':	iobyte='?';   break; // stricly correct, since no corresponding
 	case ']':   iobyte='\x1A';break; // character in the pc set exists
 	case '^':   iobyte='\x18';break; //
-	case '`':	iobyte='�'   ;break; // notably the } characters is not
-	case '#':	iobyte='�'   ;break; // converted to the proper 3/4 symbol
-	case '{':	iobyte='�'   ;break;
-	case '|':	iobyte='�'   ;break;
+	case '`':	iobyte='?'   ;break; // notably the } characters is not
+	case '#':	iobyte='?'   ;break; // converted to the proper 3/4 symbol
+	case '{':	iobyte='?'   ;break;
+	case '|':	iobyte='?'   ;break;
 	case '}':	iobyte='}'   ;break;
-	case '~':	iobyte='�'   ;break;
-	case 0x7F:	iobyte='�'   ;break; // This conversion takes place because
+	case '~':	iobyte='?'   ;break;
+	case 0x7F:	iobyte='?'   ;break; // This conversion takes place because
 											// 0x7F is used for the cursor when
 											// copying
 }

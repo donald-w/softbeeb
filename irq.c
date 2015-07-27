@@ -17,7 +17,8 @@ void vert_sync(void);
 void getkey(void);
 
 void gen_irq(void) {  		// Main interrupt generation and handler routine
-	static type_counter=0;
+	// static type_counter=0; // Added to support c99
+	static int type_counter=0;
 
 	getkey();               // Check for key input and convert pc
 									// keypress to BBC internal keynumber
@@ -173,7 +174,7 @@ void getkey(void) {
 				case '|':	current_key=0x78;SHIFT;break;
 				case '}':	current_key=0x58;SHIFT;break;
 				case '~':	current_key=0x18;SHIFT;break;
-				case '�':	current_key=0x28;SHIFT;break;
+				//case '�':	current_key=0x28;SHIFT;break; // TODO DOS / ASCII mismatch
 
 				case 0: switch(pc_scan_code/0x100) {
 
@@ -210,7 +211,7 @@ void getkey(void) {
 			old_scan_code=pc_scan_code; // store a copy of the current key
 		}
 												 // discard key repeats of the same key
-		else if (_bios_keybrd(_KEYBRD_READY)==old_scan_code) getch();
+		else if (_bios_keybrd(_KEYBRD_READY)==old_scan_code) coniogetch();
 	}
 
 	if (!pressed) {

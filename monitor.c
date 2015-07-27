@@ -9,13 +9,6 @@
 #include "screen.h"
 
 
-#define RED 11
-#define BLACK 12
-#define WHITE 13
-#define BLUE 14
-#define YELLOW 15
-
-
 void monitor(void);
 
 void monitor_call(void)  {            // Is called when home is pressed
@@ -78,15 +71,15 @@ void  monitor(void) {
 	outtextxy(0,110,"Press the key of your choice");
 	outtextxy(50,200," Press `return' to continue the Emulation");
 
-	while(kbhit()) getch();
+	while(kbhit()) coniogetch();
 
-	for(;c!='\r';c=getch()) {
+	for(;c!='\r';c=coniogetch()) {
 		switch(tolower(c)) {
 
 			case 'x':
 						 setcolor(YELLOW);
 						 outtextxy(0,305,"Are you sure you want to quit? Y/N");
-						 if(tolower(getch())=='y') quit_prog();
+						 if(tolower(coniogetch())=='y') quit_prog();
 						 else {
 							setcolor(BLACK);
 							outtextxy(0,305,"Are you sure you want to quit? Y/N");
@@ -113,7 +106,7 @@ void  monitor(void) {
 						 break;
 			case 'b': setcolor(YELLOW);
 						 outtextxy(0,305,"Press Y to confirm reset");
-						 if(tolower(getch())=='y')
+						 if(tolower(coniogetch())=='y')
 							pc=0xD9CD;
 						 setcolor(BLACK);
 						 outtextxy(0,305,"Press Y to confirm reset");
@@ -122,7 +115,7 @@ void  monitor(void) {
 
 			case 's': setcolor(YELLOW);
 						 outtextxy(0,305,"Do you want sound? Y/N");
-						 if(tolower(getch())=='y') {
+						 if(tolower(coniogetch())=='y') {
 						 soundyesno=1;
 						 update_sound();
 						 }

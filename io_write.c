@@ -36,7 +36,7 @@ puts("Donald");
 }
 
 
-void nullwrite()
+void nullwrite(ubyte ignored)
 {
 }
 

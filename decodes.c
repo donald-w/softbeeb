@@ -8,6 +8,9 @@
 
 #define CLE except=0
 
+ubyte _AL = 0;
+ubyte _AH = 0;
+
 void non_opcode(void);  		 // prototype for function occuring when
 										 // an illegal opcode is executed
 void update_flags(void);
