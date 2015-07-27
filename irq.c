@@ -216,9 +216,10 @@ void getkey(void) {
 
 	if (!pressed) {
 
-		asm IN AL,0x60
-		asm push AX
-		asm pop pc_scan_code;
+		/* TODO this is an x86 keyboard read
+		asm("IN AL,0x60"); */
+		asm("push AX");
+		asm("pop pc_scan_code");
 
 		if (pc_scan_code&0x80) {      // detect if no keys are physically
 			current_key=0;             // pressed

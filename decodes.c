@@ -558,19 +558,19 @@ CLE;
 temp2=getbyte(pc)+x_reg;
 temp1=getbyte(RAM[temp2]+0x100*RAM[temp2+1]);
 
-asm push ax
-asm CLC
-if (carry_f) asm STC;
+asm("push ax");
+asm("CLC");
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -587,20 +587,20 @@ CLE;
 
 temp1=RAM[getbyte(pc)];
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (carry_f) asm STC;
+asm("CLC");
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -641,20 +641,20 @@ uint answer;
 CLE;
 temp1=getbyte(pc);
 
-asm push ax
-asm CLC
+asm("push ax");
+asm("CLC");
 
-if (carry_f) asm STC;
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -693,20 +693,20 @@ CLE;
 
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1));
 
-asm push ax
-asm CLC
+asm("push ax");
+asm("CLC");
 
-if (carry_f) asm STC;
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=(acc=answer);
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -747,20 +747,20 @@ CLE;
 temp2=getbyte(pc);
 temp1=getbyte(RAM[temp2]+0x100*RAM[temp2+1]+y_reg);
 
-asm push ax
-asm CLC
+asm("push ax");
+asm("CLC");
 
-if (carry_f) asm STC;
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=(acc=answer);
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -777,20 +777,20 @@ uint answer;
 CLE;
 temp1=RAM[(ubyte)(getbyte(pc)+x_reg)];
 
-asm push ax
-asm CLC
+asm("push ax");
+asm("CLC");
 
-if (carry_f) asm STC;
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=(acc=answer);
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -827,20 +827,20 @@ uint answer;
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1)+y_reg);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (carry_f) asm STC;
+asm("CLC");
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=(acc=answer);
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -856,20 +856,20 @@ uint answer;
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1)+x_reg);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (carry_f) asm STC;
+asm("CLC");
+if (carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm adc AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("adc AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1167,18 +1167,18 @@ CLE;
 
 temp1=getbyte(pc);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=y_reg;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1194,18 +1194,18 @@ CLE;
 temp2=getbyte(pc)+x_reg;
 temp1=getbyte(RAM[temp2]+0x100*RAM[(ubyte)(temp2+1)]);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1221,18 +1221,18 @@ ubyte neartemp;
 CLE;
 neartemp=RAM[getbyte(pc)];
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=y_reg;
 _AH=neartemp;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1247,18 +1247,18 @@ uint flags;
 CLE;
 temp1=RAM[getbyte(pc)];
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1288,18 +1288,18 @@ uint flags;
 CLE;
 temp1=getbyte(pc);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1321,18 +1321,18 @@ uint flags;
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1));
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=y_reg;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1348,18 +1348,18 @@ uint flags;
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1));
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1391,18 +1391,18 @@ CLE;
 temp2=getbyte(pc);
 temp1=getbyte(RAM[temp2]+0x100*RAM[temp2+1]+y_reg);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1419,18 +1419,18 @@ uint flags;
 CLE;
 temp1=RAM[(ubyte)(getbyte(pc)+x_reg)];
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1459,18 +1459,18 @@ uint flags;
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1)+y_reg);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1485,18 +1485,18 @@ uint flags;
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1)+x_reg);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1520,18 +1520,18 @@ uint flags;
 CLE;
 temp1=getbyte(pc);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=x_reg;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1548,20 +1548,20 @@ CLE;
 temp2=getbyte(pc)+x_reg;
 temp1=getbyte(RAM[temp2]+0x100*RAM[(ubyte)(temp2+1)]);
 
-asm push ax
-asm CLC
+asm("push ax");
+asm("CLC");
 
-if (!carry_f) asm STC;
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1576,18 +1576,18 @@ uint flags;
 CLE;
 temp1=RAM[getbyte(pc)];
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=x_reg;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1604,20 +1604,20 @@ uint answer;
 CLE;
 temp1=RAM[getbyte(pc)];
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1649,20 +1649,20 @@ uint answer;
 CLE;
 temp1=getbyte(pc);
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1681,18 +1681,18 @@ uint flags;
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1));
 
-asm push ax
+asm("push ax");
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=x_reg;
 _AH=temp1;
 
-asm cmp AL,AH
-asm pushf
-asm pop flags
-asm pop AX
+asm("cmp AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("pop AX");
 
 carry_f=(flags&1)^1;
 result_f=flags&0xC0;
@@ -1708,22 +1708,22 @@ void sbc_ED(void)
 uint flags;
 uint answer;
 
-asm push ax
+asm("push ax");
 CLE;
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1));
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1753,23 +1753,23 @@ void sbc_F1(void)
 uint flags;
 uint answer;
 CLE;
-asm push ax
+asm("push ax");
 
 temp2=getbyte(pc);
 temp1=getbyte(RAM[temp2]+0x100*RAM[(ubyte)(temp2+1)]+y_reg);
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1783,22 +1783,22 @@ void sbc_F5(void)
 uint flags;
 uint answer;
 CLE;
-asm push ax
+asm("push ax");
 
 temp1=RAM[(ubyte)(getbyte(pc)+x_reg)];
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1827,22 +1827,22 @@ void sbc_F9(void)
 uint flags;
 uint answer;
 CLE;
-asm push ax
+asm("push ax");
 
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1)+y_reg);
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
@@ -1857,22 +1857,22 @@ uint flags;
 uint answer;
 
 CLE;
-asm push ax
+asm("push ax");
 
 temp1=getbyte(getbyte(pc)+0x100*getbyte(pc+1)+x_reg);
 
-asm CLC
-if (!carry_f) asm STC;
+asm("CLC");
+if (!carry_f) asm("STC");
 
 _AL=acc;
 _AH=temp1;
 
-asm sbb AL,AH
-asm pushf
-asm pop flags
-asm push AX
-asm pop answer
-asm pop AX
+asm("sbb AL,AH");
+asm("pushf");
+asm("pop flags");
+asm("push AX");
+asm("pop answer");
+asm("pop AX");
 
 result_f=acc=answer;
 (flags&0x800)?(ovr_f=1):(ovr_f=0);
