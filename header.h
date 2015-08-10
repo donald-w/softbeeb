@@ -3,6 +3,10 @@
 
 #include <stdio.h>
 
+//  Placehold for asm support
+    extern void asm(char *);
+
+
 // Standard type definitions
 
 	typedef unsigned char ubyte;

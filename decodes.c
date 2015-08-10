@@ -10,6 +10,10 @@
 
 ubyte _AL = 0;
 ubyte _AH = 0;
+void asm(char * ignored) {
+
+}
+
 
 void non_opcode(void);  		 // prototype for function occuring when
 										 // an illegal opcode is executed
