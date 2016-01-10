@@ -23,7 +23,7 @@ FILE *output;
 void system_init(void)
 {
 	int gdriver=VGA,gmode=VGAMED;
-	output=fopen("C:\\output.dat","wb");
+	output=fopen("./output.dat","wb");
 
 //	unsigned int c;
 //	unsigned char test[]={END};

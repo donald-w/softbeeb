@@ -1,3 +1,5 @@
+#pragma once
+
 #define BRK 0x00
 #define PHP 0x08
 #define ORA 0x09

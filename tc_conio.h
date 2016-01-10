@@ -1,5 +1,4 @@
-#ifndef SOFTBEEB_TC_CONIO_H
-#define SOFTBEEB_TC_CONIO_H
+#pragma once
 
 #include <stdio.h>
 #include "header.h"
@@ -13,5 +12,3 @@ extern void _setcursortype(int cursortype);
 
 #define _NOCURSOR 0
 #define _NORMALCURSOR 1
-
-#endif //SOFTBEEB_TC_CONIO_H

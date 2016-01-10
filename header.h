@@ -1,5 +1,4 @@
-#ifndef SOFTBEEB_HEADER_H
-#define SOFTBEEB_HEADER_H
+#pragma once
 
 #include <stdio.h>
 
@@ -100,4 +99,3 @@
 	extern ubyte except;
 // _______________________
 
-#endif // SOFTBEEB_HEADER_H

@@ -1,3 +1,5 @@
+#pragma once
+
 extern void non_opcode(void);  // prototype for function occuring when
 										 // an illegal opcode is executed
 

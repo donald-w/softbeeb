@@ -1,4 +1,1 @@
-#ifndef SOFTBEEB_TC_ALLOC_H
-#define SOFTBEEB_TC_ALLOC_H
-
-#endif //SOFTBEEB_TC_ALLOC_H
+#pragma once

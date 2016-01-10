@@ -1,3 +1,5 @@
+#pragma once
+
 /* Graphics Related Declarations. */
 
 extern ubyte crt_regs[18];

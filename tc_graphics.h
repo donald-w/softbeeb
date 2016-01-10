@@ -1,5 +1,4 @@
-#ifndef SOFTBEEB_TC_GRAPHICS_H
-#define SOFTBEEB_TC_GRAPHICS_H
+#pragma once
 
 #include "header.h"
 
@@ -70,5 +69,3 @@ extern void outtextxy(int i, int i1, char *string);
 
 #define DEFAULT_FONT 0
 #define HORIZ_DIR 0
-
-#endif //SOFTBEEB_TC_GRAPHICS_H

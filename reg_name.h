@@ -1,3 +1,5 @@
+#pragma once
+
 #define ORB 0
 #define ORA 1
 #define DDRB 2
