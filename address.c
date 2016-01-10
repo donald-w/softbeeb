@@ -73,12 +73,12 @@ void init_mem(void)     // initialise the 6502 memory space
 	}
 
 	printf("Opening ROM Image files..."); // display pretty startup status
-	if ((fp1=fopen("data\\os.bin","rb"))==NULL)
+	if ((fp1=fopen("roms\\os.bin","rb"))==NULL)
 	{
 		printf("\nError: Could not open OS_ROM image.");
 		exit(1);    // exit abnormally
 	}
-	if ((fp2=fopen("data\\basic.bin","rb"))==NULL)
+	if ((fp2=fopen("roms\\basic.bin","rb"))==NULL)
 	{
 		printf("\nError: Could not open lang_ROM image.");
 		exit(1);    // exit abnormally
