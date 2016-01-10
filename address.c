@@ -78,7 +78,7 @@ void init_mem(void)     // initialise the 6502 memory space
 		printf("\nError: Could not open OS_ROM image.");
 		exit(1);    // exit abnormally
 	}
-	if ((fp2=fopen("data\\basic.bin","rb"))==NULL)
+	if ((fp2=fopen("data\\basic.bin.tmp","rb"))==NULL)
 	{
 		printf("\nError: Could not open lang_ROM image.");
 		exit(1);    // exit abnormally

@@ -155,7 +155,7 @@ void init_mem(void)     // initialise the 6502 memory space
 		printf("\nError: Could not open OS_ROM image.");
 		exit(1);    // exit abnormally
 	}
-	if ((fp2=fopen("data\\basic.bin","rb"))==NULL)
+	if ((fp2=fopen("data\\basic.bin.tmp","rb"))==NULL)
 	{
 		printf("\nError: Could not open lang_ROM image.");
 		exit(1);    // exit abnormally
@@ -3139,7 +3139,7 @@ void getkey(void) {
 				case '|':	current_key=0x78;SHIFT;break;
 				case '}':	current_key=0x58;SHIFT;break;
 				case '~':	current_key=0x18;SHIFT;break;
-				case 'œ':	current_key=0x28;SHIFT;break;
+				case 'ï¿½':	current_key=0x28;SHIFT;break;
 
 				case 0: switch(pc_scan_code/0x100) {
 
@@ -3246,16 +3246,16 @@ switch(iobyte) {                 // convert pc characters to teletext
 											// characters
 	case '_':	iobyte='#'   ;break;
 	case '[':   iobyte='\x1B';break; // some of these conversion are not
-	case '\\':	iobyte='«';   break; // stricly correct, since no corresponding
+	case '\\':	iobyte='ï¿½';   break; // stricly correct, since no corresponding
 	case ']':   iobyte='\x1A';break; // character in the pc set exists
 	case '^':   iobyte='\x18';break; //
-	case '`':	iobyte='Ä'   ;break; // notably the } characters is not
-	case '#':	iobyte='œ'   ;break; // converted to the proper 3/4 symbol
-	case '{':	iobyte='¬'   ;break;
-	case '|':	iobyte='º'   ;break;
+	case '`':	iobyte='ï¿½'   ;break; // notably the } characters is not
+	case '#':	iobyte='ï¿½'   ;break; // converted to the proper 3/4 symbol
+	case '{':	iobyte='ï¿½'   ;break;
+	case '|':	iobyte='ï¿½'   ;break;
 	case '}':	iobyte='}'   ;break;
-	case '~':	iobyte='ö'   ;break;
-	case 0x7F:	iobyte='Û'   ;break; // This conversion takes place because
+	case '~':	iobyte='ï¿½'   ;break;
+	case 0x7F:	iobyte='ï¿½'   ;break; // This conversion takes place because
 											// 0x7F is used for the cursor when
 											// copying
 }
