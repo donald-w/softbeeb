@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-//  Placehold for asm support
+//  Placeholder for asm support
     extern void asm(char *);
 
 
