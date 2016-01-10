@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdint.h>
 
 //  Placeholder for asm support
     extern void asm(char *);
@@ -10,7 +11,7 @@
 
 	typedef uint8_t ubyte;
 	typedef uint16_t uint;
-	typedef int8_t char sbyte;
+	typedef int8_t sbyte;
 // __________________________
 
 
