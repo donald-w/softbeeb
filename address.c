@@ -13,20 +13,19 @@ void (*screen_byte_P)(ubyte,uint);
 This function is _always_ used to access an address unless it is in the
 zero page or the stack, then it may be directly accessed in the RAM[]
 */
-
-unsigned char getbyte(unsigned int address)
+ubyte getbyte(uint address)
 {
 
 if (address<0x8000) return RAM[address];
 					// If address is below the 32K mark access the RAM
 
 
-if (address<0xC000) return (romsel==0xC?lang_ROM[address-0x8000]:0xFF);
+if (address<0xC000) return (romsel==0xC?lang_ROM[address-0x8000]:(ubyte)0xFF);
 					// If address is below the 48K mark access the language ROM
 if ((address>0xFEFF)||(address<0xFC00)) return OS_ROM[address-0xC000];
 					// If address is outside the 3 pages of memmapped io,
 					// access the OS_ROM
-return ((address&0xFF00)==0xFE00)?rsheila[(char)(address)]():0xff;
+return ((address&0xFF00)==0xFE00)?rsheila[(char)(address)]():(ubyte)0xff;
 
 }					// the address must be in the 3 pages of memmapped io.
 
@@ -37,7 +36,7 @@ known for certain to exist with the zeropage/stack range.
 (when it may be accessed directly through the RAM[]).
 */
 
-void putbyte (unsigned char byte, unsigned int address)
+void putbyte(ubyte byte, uint address)
 {
 if (address<0x8000)
 	{
@@ -89,8 +88,8 @@ void init_mem(void)     // initialise the 6502 memory space
 	printf("Reading ROM Image data..."); // display pretty startup status
 	for (c=0;c<0x4000;c++)   // initialise the ROM blocks
 	{
-		OS_ROM[c]=getc(fp1);    // read data from the image files
-		lang_ROM[c]=getc(fp2);  //
+		OS_ROM[c]=(ubyte)getc(fp1);    // read data from the image files
+		lang_ROM[c]=(ubyte)getc(fp2);  //
 
 		if ((ferror(fp2))||(ferror(fp1)))
 		{

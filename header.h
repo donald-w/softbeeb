@@ -8,9 +8,9 @@
 
 // Standard type definitions
 
-	typedef unsigned char ubyte;
-	typedef unsigned int uint;
-	typedef signed char sbyte;
+	typedef uint8_t ubyte;
+	typedef uint16_t uint;
+	typedef int8_t char sbyte;
 // __________________________
 
 
