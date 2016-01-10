@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "header.h"
 #include "io.h"
 #include "tc_dos.h"
@@ -30,9 +29,10 @@ void get_vol(ubyte iobyte) {    // used to extract volume data from a byte
 		case 0x00: channel=3;break;
 		case 0x20: channel=2;break;
 		case 0x40: channel=1;break;
+		default: channel=0; // Added to prevent compiler warning.  Check behaviour. 2016
 	}
 
-	vol[channel]=15-(iobyte&(0xF));   // update channel
+	vol[channel]=((ubyte)15)-(iobyte&((ubyte)0xF));   // update channel
 }
 
 void get_freq(ubyte iobyte) {      // used to extract frequency data from

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "tc_conio.h"
 #include "tc_graphics.h"

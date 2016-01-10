@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "tc_conio.h"
 #include "tc_graphics.h"
-#include "tc_dos.h"
 #include "header.h"
 #include "screen.h"
 #include "io.h"
