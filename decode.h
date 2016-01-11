@@ -2,7 +2,7 @@
 
 #include "header.h"
 
-extern void non_opcode(void);  // prototype for function occuring when
+extern void non_opcode(void);  // prototype for function occurring when
 // an illegal opcode is executed
 
 extern void update_flags(void);
