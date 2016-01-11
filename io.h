@@ -4,7 +4,9 @@
 
 extern ubyte crt_regs[18];
 extern ubyte crt_sel;
+
 extern void update_cursor(void);
+
 extern ubyte vid_con_reg;
 extern ubyte vid_ula;
 /*********************************/
@@ -27,7 +29,9 @@ extern ubyte current_control;
 /* Sound Related Declarations */
 
 extern void sound_byte(ubyte);
+
 extern void update_sound(void);
+
 extern uint freqbits[4];
 extern ubyte vol[4];
 extern ubyte soundyesno;

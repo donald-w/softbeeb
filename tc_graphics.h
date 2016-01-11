@@ -3,6 +3,7 @@
 #include "header.h"
 
 extern void getimage(int i, int i1, int i2, int i3, ubyte ram[]);
+
 extern void putimage(int i, int i1, ubyte ram[], int i2);
 
 extern void putpixel(uint i, uint cord, int i1);
@@ -30,23 +31,26 @@ extern void textmode(int i);
 #define YELLOW 15
 
 #define EGAVGA_driver_far 0
+
 extern int registerfarbgidriver(int far);
 
 extern void setpalette(ubyte c, ubyte i);
 
-#define EGA_WHITE	0
-#define EGA_CYAN	1
-#define EGA_MAGENTA	2
-#define EGA_BLUE	3
-#define EGA_YELLOW	4
-#define EGA_GREEN	5
-#define EGA_RED		6
-#define EGA_BLACK	7
-#define EGA_LIGHTRED	8
+#define EGA_WHITE    0
+#define EGA_CYAN    1
+#define EGA_MAGENTA    2
+#define EGA_BLUE    3
+#define EGA_YELLOW    4
+#define EGA_GREEN    5
+#define EGA_RED        6
+#define EGA_BLACK    7
+#define EGA_LIGHTRED    8
 
 
 extern void setvisualpage(int i);
+
 extern void setactivepage(int i);
+
 extern void cprintf(char *string);
 
 extern void closegraph();

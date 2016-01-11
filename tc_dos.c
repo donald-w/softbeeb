@@ -12,7 +12,7 @@ void delay(int delay) {
 
 }
 
-char peekb(int segment,int offset) {
+char peekb(int segment, int offset) {
     return 0;
 }
 
