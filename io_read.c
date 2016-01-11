@@ -78,11 +78,11 @@ the system via. with ? representing the register in hexadecimal.
 */
 
 ubyte sr_via_0(void) {
-    return 0xF0 | current_latch;   // return the last value sent to latch
+    return (ubyte)0xF0 | current_latch;   // return the last value sent to latch
 }
 
 ubyte sr_via_1(void) {
-    if ((current_key) && (s_via_opa == current_key)) return (current_key | 0x80);
+    if ((current_key) && (s_via_opa == current_key)) return (current_key | (ubyte)0x80);
     if ((s_via_opa == 0) && (current_shift)) return 0x80;
     if ((s_via_opa == 1) && (current_control)) return 0x81;
     return s_via_opa;
@@ -137,7 +137,7 @@ ubyte sr_via_D(void) {
 }
 
 ubyte sr_via_E(void) {
-    return (s_via[IER] | 0x80);
+    return (s_via[IER] | (ubyte)0x80);
 }
 
 ubyte sr_via_F(void) {
