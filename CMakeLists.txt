@@ -4,34 +4,37 @@ project(softbeeb)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 
+include_directories(include)
+
 set(SOURCE_FILES
         address.c
-        decode.h
         decodes.c
-        header.h
+        include/decode.h
+        include/header.h
+        include/mnemonic.h
+        include/reg_name.h
+        include/screen.h
+        include/tc_alloc.h
+        include/tc_bios.h
+        include/tc_conio.h
+        include/tc_dos.h
+        include/tc_graphics.h
         io.h
         io_read.c
         io_write.c
         irq.c
         main.c
         misc.c
-        mnemonic.h
         monitor.c
         opcodes.c
-        reg_name.h
         screen.c
-        screen.h
         scroll.c
         sound.c
-        tc_conio.h
-        tc_conio.c
-        tc_graphics.h
-        tc_graphics.c
-        tc_dos.h
-        tc_dos.c
-        tc_bios.h
+        tc_alloc.c
         tc_bios.c
-        tc_alloc.h
-        tc_alloc.c)
+        tc_conio.c
+        tc_dos.c
+        tc_graphics.c
+)
 
 add_executable(softbeeb ${SOURCE_FILES})
