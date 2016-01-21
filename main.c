@@ -54,6 +54,7 @@ int main() {
         ir = getbyte(pc++);                // fetch instruction
         decode[ir]();              // decode and execute the instructon
 
+        //show_regs();
 
         if (!clock)                // if an interrupt is due
         {
