@@ -10,10 +10,10 @@
 
 ubyte _AL = 0;
 ubyte _AH = 0;
-void asm(
-char *ignored
-) {
 
+
+// Allow everything to compile until assembly instructions are migrated
+void asm(char *ignored) {
 }
 
 
