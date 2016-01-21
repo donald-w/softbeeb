@@ -118,7 +118,7 @@ void titlepic(void) {                     // the title picture display
 
     FILE *title;
 
-    if ((title = fopen("data\\title.bmp", "rb")) == NULL) {
+    if ((title = fopen("data/title.bmp", "rb")) == NULL) {
         printf("Titlepic fileopen Error");
         coniogetch();                            // open the picture file
         exit(1);
@@ -189,7 +189,7 @@ void titlepic(void) {                     // the title picture display
                 setrgbpalette(15, red, green, blue);
                 setpalette(15, 15);
                 delay(10);                        // delay deliberately
-                if (kbhit()) {
+                if (1 /*kbhit() */) {   // TODO no point waiting for press any key to continue
                     coniogetch();
                     return;
                 }   // until keypressed
