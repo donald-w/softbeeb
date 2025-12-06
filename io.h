@@ -32,7 +32,7 @@ extern void sound_byte(ubyte);
 
 extern void update_sound(void);
 
-extern uint freqbits[4];
+extern bbcuint freqbits[4];
 extern ubyte vol[4];
 extern ubyte soundyesno;
 /**********************************/
