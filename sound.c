@@ -6,7 +6,7 @@
 void get_vol(ubyte iobyte);       // prototypes for sound functions
 void get_freq(ubyte iobyte);
 
-uint freqbits[4];                 // arrays holding frequencys
+bbcuint freqbits[4];                 // arrays holding frequencys
 ubyte vol[4];                     // and volumes for each channel
 ubyte soundyesno = 1;
 
@@ -67,7 +67,7 @@ void get_freq(ubyte iobyte) {      // used to extract frequency data from
     if (!(iobyte & 0x80)) {          // if a `low order' frequency byte
 
         freqbits[channel] &= 0x000F;
-        freqbits[channel] |= (((uint) (iobyte & 0x3F)) << 4); // update low order bits
+        freqbits[channel] |= (((bbcuint) (iobyte & 0x3F)) << 4); // update low order bits
     }
 }
 
@@ -80,7 +80,7 @@ variable frequency, variable volume frequencies.
 
 void update_sound(void) {
 
-    uint c, totvol = 0;
+    bbcuint c, totvol = 0;
     double totfreq = 0;
 
     for (c = 1; c < 4; c++) {    // step through each channel
