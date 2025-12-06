@@ -113,8 +113,8 @@ void titlepic(void) {                     // the title picture display
     // display function
     int horz, vert;
     int vvert = 0;
-    uint c, d = 0;
-    uint red = 63, green = 0, blue = 0;
+    bbcuint c, d = 0;
+    bbcuint red = 63, green = 0, blue = 0;
 
     FILE *title;
 
