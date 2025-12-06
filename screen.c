@@ -11,8 +11,8 @@ void update_full_text_screen(void);
 void (*update_screen)(void) = update_full_text_screen; // initialise update
 // screen function
 
-uint screen_start = 0x7C00;        // init screen variables for teletext
-uint ram_screen_start = 0x7C00;    //
+uint16_t screen_start = 0x7C00;        // init screen variables for teletext
+uint16_t ram_screen_start = 0x7C00;    //
 ubyte teletext = 1;                //
 
 // Declare graphics variables..
@@ -23,7 +23,7 @@ ubyte colour_bits;               // bits per pixel
 /*
 	Teletext screen write function.
 */
-void text_screen_byte(ubyte iobyte, uint address) {
+void text_screen_byte(ubyte iobyte, uint16_t address) {
     ubyte column = 1;                          // init column (first column=1)
     ubyte row = 1;                             // init row    (first row=1)
 
@@ -89,11 +89,11 @@ void text_screen_byte(ubyte iobyte, uint address) {
 /*
 This function is used for graphics modes with 1 bit per pixel
 */
-void screen_byte_1(ubyte iobyte, uint address) {
-    uint x_cord = 0;                 // init real x cordinate variable
-    uint y_cord = 0;                 // init real y cordinate variable
-    uint virt_y_cord = 0;            // init actual pc output y coordinate
-    uint bitsperline;              // variable holding bits per line
+void screen_byte_1(ubyte iobyte, uint16_t address) {
+    uint16_t x_cord = 0;                 // init real x cordinate variable
+    uint16_t y_cord = 0;                 // init real y cordinate variable
+    uint16_t virt_y_cord = 0;            // init actual pc output y coordinate
+    uint16_t bitsperline;              // variable holding bits per line
 
     // deal with hardware wrap-around
     if (address < screen_start) address += (0x8000 - ram_screen_start);
@@ -186,11 +186,11 @@ void screen_byte_1(ubyte iobyte, uint address) {
 /*
 Screen output function for 2 bits per pixels (4 colour) modes.
 */
-void screen_byte_2(ubyte iobyte, uint address) {
-    uint x_cord = 0;         // general x coordinate variable
-    uint y_cord = 0;         // general y coordinate variable
-    uint virt_y_cord = 0;    // vertically scaled pc y coordinate
-    uint bitsperline;      // bits per line variable
+void screen_byte_2(ubyte iobyte, uint16_t address) {
+    uint16_t x_cord = 0;         // general x coordinate variable
+    uint16_t y_cord = 0;         // general y coordinate variable
+    uint16_t virt_y_cord = 0;    // vertically scaled pc y coordinate
+    uint16_t bitsperline;      // bits per line variable
     ubyte colpix1;         // colour of pixel 1
     ubyte colpix2;         // colour of pixel 2
     ubyte colpix3;         // colour of pixel 3
@@ -350,11 +350,11 @@ void screen_byte_2(ubyte iobyte, uint address) {
 /*
 Screen output function for 16 colour modes
 */
-void screen_byte_4(ubyte iobyte, uint address) {
-    uint x_cord = 0;                       // general x coordinate
-    uint y_cord = 0;                       // general y coordinate
-    uint virt_y_cord = 0;                  // scaled pc y coordinate
-    uint bitsperline;                    // bits per scaline
+void screen_byte_4(ubyte iobyte, uint16_t address) {
+    uint16_t x_cord = 0;                       // general x coordinate
+    uint16_t y_cord = 0;                       // general y coordinate
+    uint16_t virt_y_cord = 0;                  // scaled pc y coordinate
+    uint16_t bitsperline;                    // bits per scaline
 
     ubyte colpix1;                       // holds the colour of pixel 1
     ubyte colpix2;                       // holds the colour of pixel 2
@@ -505,10 +505,10 @@ void screen_byte_4(ubyte iobyte, uint address) {
 
 
 void update_cursor(void) {
-    uint cursor_add;                   // cursor address
-    uint cursor_wid;                   // cursor width in bytes
-    static uint old_cursor_add;        // static variable to hold the
-    static uint old_cursor_wid;        // previous cursor data,
+    uint16_t cursor_add;                   // cursor address
+    uint16_t cursor_wid;                   // cursor width in bytes
+    static uint16_t old_cursor_add;        // static variable to hold the
+    static uint16_t old_cursor_wid;        // previous cursor data,
     // so that it may be erased
 
     if (teletext) {                    // if in teletext mode
@@ -579,8 +579,8 @@ void update_cursor(void) {
 // The name says it all really, used to update
 // the teletext screen 	after a hardware scroll
 void update_full_text_screen(void) {
-    uint c;
-    uint d;
+    uint16_t c;
+    uint16_t d;
 
     _setcursortype(_NOCURSOR);     // turn off the cursor to stop flickering
 
