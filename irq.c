@@ -52,8 +52,8 @@ void gen_irq(void) {        // Main interrupt generation and handler routine
 
 void getkey(void) {
 
-    uint pc_scan_code;
-    static uint old_scan_code;
+    bbcuint pc_scan_code;
+    static bbcuint old_scan_code;
     static ubyte pressed = 0;
     // If no key is pressed,
     if (!pressed) {                       // get the shift status
@@ -553,10 +553,13 @@ void getkey(void) {
 
     if (!pressed) {
 
-        /* TODO this is an x86 keyboard read
-        asm("IN AL,0x60"); */
-        asm("push AX");
-        asm("pop pc_scan_code");
+        /* TODO this is an x86 keyboard read - stubbed out for now
+            asm("IN AL,0x60");
+            asm("push AX");
+            asm("pop pc_scan_code");
+        */
+
+        pc_scan_code = 0;  // TODO Placeholder: actual keyboard scanning not implemented
 
         if (pc_scan_code & 0x80) {      // detect if no keys are physically
             current_key = 0;             // pressed
