@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "header.h"
 
-extern void gotoxy(uint i, uint i1);
+extern void gotoxy(bbcuint i, bbcuint i1);
 
 extern void putch(ubyte iobyte);
 

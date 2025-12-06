@@ -2,9 +2,9 @@
 
 // Video Output Control Functions / Data
 
-extern void (*screen_byte_P)(ubyte, uint);
+extern void (*screen_byte_P)(ubyte, bbcuint);
 
-extern void text_screen_byte(ubyte, uint);
+extern void text_screen_byte(ubyte, bbcuint);
 
 extern void teletext_init(void);
 
@@ -20,10 +20,10 @@ extern void (*update_screen)(void);
 
 extern void flash(void);
 
-extern uint ram_screen_start;
+extern bbcuint ram_screen_start;
 extern ubyte teletext;
 extern ubyte disp_chars;
-extern uint screen_start;
+extern bbcuint screen_start;
 extern ubyte vidpal[16];
 
 extern void mono_update(void);

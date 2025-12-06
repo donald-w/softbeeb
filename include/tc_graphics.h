@@ -6,7 +6,7 @@ extern void getimage(int i, int i1, int i2, int i3, ubyte ram[]);
 
 extern void putimage(int i, int i1, ubyte ram[], int i2);
 
-extern void putpixel(uint i, uint cord, int i1);
+extern void putpixel(bbcuint i, bbcuint cord, int i1);
 
 extern void setgraphmode(int vgamed);
 
@@ -59,7 +59,7 @@ extern void initgraph(int *pInt, int *pInt1, char *string);
 
 extern void setrgbpalette(int i, int i1, int i2, int i3);
 
-extern uint getcolor();
+extern bbcuint getcolor();
 
 extern void setbkcolor(int i);
 
