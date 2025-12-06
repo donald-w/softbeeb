@@ -11,9 +11,6 @@
 ubyte _AL = 0;
 ubyte _AH = 0;
 
-void asm_stub(char *ignored) {
-}
-
 void non_opcode(void);         // prototype for function occuring when
 // an illegal opcode is executed
 void update_flags(void);
@@ -24,7 +21,56 @@ void update_dyn_p(void);       // builds a valid status byte for
 ubyte temp1 = 0;       //
 ubyte temp2 = 0;       // Misc scratchpad variables for use in
 ubyte temp3 = 0;       // decode functions
-bbcuint tempint = 0;
+uint16_t tempint = 0;
+
+// Portable implementation of 6502 ADC (Add with Carry)
+// Returns the result and sets carry_f and ovr_f appropriately
+static inline ubyte do_adc(ubyte a, ubyte b, ubyte carry_in) {
+    uint16_t result = a + b + carry_in;
+    ubyte final_result = result & 0xFF;
+    
+    // Set carry flag if result > 255
+    carry_f = (result > 0xFF) ? 1 : 0;
+    
+    // Set overflow flag if sign bit changed incorrectly
+    // Overflow occurs when adding two numbers with the same sign produces a result with a different sign
+    ovr_f = ((~(a ^ b)) & (a ^ final_result) & 0x80) ? 1 : 0;
+    
+    return final_result;
+}
+
+// Portable implementation of 6502 SBC (Subtract with Carry/Borrow)
+// Returns the result and sets carry_f and ovr_f appropriately
+static inline ubyte do_sbc(ubyte a, ubyte b, ubyte carry_in) {
+    uint16_t result = a - b - (1 - carry_in);
+    ubyte final_result = result & 0xFF;
+    
+    // Set carry flag if no borrow occurred (result >= 0)
+    carry_f = (result < 0x100) ? 1 : 0;
+    
+    // Set overflow flag if sign bit changed incorrectly
+    // Overflow occurs when subtracting numbers with different signs produces an incorrect sign
+    ovr_f = (((a ^ b)) & (a ^ final_result) & 0x80) ? 1 : 0;
+    
+    return final_result;
+}
+
+// Portable implementation of 6502 CMP/CPX/CPY (Compare)
+// Sets carry_f and result_f based on comparison (doesn't modify accumulator)
+static inline void do_cmp(ubyte a, ubyte b) {
+    uint16_t result = a - b;
+    
+    // Set carry flag if a >= b (no borrow)
+    carry_f = (a >= b) ? 1 : 0;
+    
+    // Set result_f based on the flags (negative and zero flags)
+    // Bit 7 = N (negative), Bit 6 = Z (zero)  
+    result_f = (result & 0x80);  // Negative flag
+    if ((result & 0xFF) == 0) {
+        result_f |= 0x40;  // Zero flag
+    }
+    result_f ^= 0x40;  // Invert zero flag bit as per original code
+}
 
 void (*decode[256])(void); // array of pointers to decode functions
 
@@ -501,60 +547,21 @@ void rts_60(void) {
 }
 
 void adc_61(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
 
     temp2 = getbyte(pc) + x_reg;
     temp1 = getbyte(RAM[temp2] + 0x100 * RAM[temp2 + 1]);
 
-    asm_stub("push ax");
-    asm_stub("CLC");
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 0x01;
+    result_f = acc = do_adc(acc, temp1, carry_f);
     pc++;
 }
 
 void adc_65(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
 
     temp1 = RAM[getbyte(pc)];
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 0x01;
+    result_f = acc = do_adc(acc, temp1, carry_f);
 
     pc++;
 }
@@ -582,30 +589,10 @@ void pla_68(void) {
 }
 
 void adc_69(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
     temp1 = getbyte(pc);
 
-    asm_stub("push ax");
-    asm_stub("CLC");
-
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 0x01;
+    result_f = acc = do_adc(acc, temp1, carry_f);
 
     pc++;
 }
@@ -630,31 +617,11 @@ void jmp_6C(void) {
 }
 
 void adc_6D(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
 
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1));
 
-    asm_stub("push ax");
-    asm_stub("CLC");
-
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = (acc = answer);
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 0x01;
+    result_f = acc = do_adc(acc, temp1, carry_f);
 
     pc += 2;
 }
@@ -680,61 +647,21 @@ void bvs_70(void) {
 }
 
 void adc_71(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
 
     temp2 = getbyte(pc);
     temp1 = getbyte(RAM[temp2] + 0x100 * RAM[temp2 + 1] + y_reg);
 
-    asm_stub("push ax");
-    asm_stub("CLC");
-
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = (acc = answer);
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 0x01;
+    result_f = acc = do_adc(acc, temp1, carry_f);
 
     pc++;
 }
 
 void adc_75(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
     temp1 = RAM[(ubyte) (getbyte(pc) + x_reg)];
 
-    asm_stub("push ax");
-    asm_stub("CLC");
-
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = (acc = answer);
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 0x01;
+    result_f = acc = do_adc(acc, temp1, carry_f);
 
     pc++;
 }
@@ -759,57 +686,19 @@ void sei_78(void) {
 }
 
 void adc_79(void) {
-    bbcuint flags;
-    bbcuint answer;
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + y_reg);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = (acc = answer);
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 1;
+    result_f = acc = do_adc(acc, temp1, carry_f);
 
     pc += 2;
 }
 
 void adc_7D(void) {
-    bbcuint flags;
-    bbcuint answer;
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + x_reg);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("adc AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = flags & 0x01;
+    result_f = acc = do_adc(acc, temp1, carry_f);
 
     pc += 2;
 }
@@ -1055,104 +944,40 @@ void ldx_BE(void) {
 }
 
 void cpy_C0(void) {
-    bbcuint flags;
     CLE;
 
     temp1 = getbyte(pc);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = y_reg;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(y_reg, temp1);
 
     pc++;
 }
 
 void cmp_C1(void) {
-    bbcuint flags;
     CLE;
     temp2 = getbyte(pc) + x_reg;
     temp1 = getbyte(RAM[temp2] + 0x100 * RAM[(ubyte) (temp2 + 1)]);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc++;
 }
 
 void cpy_C4(void) {
-    bbcuint flags;
     ubyte neartemp;
     CLE;
     neartemp = RAM[getbyte(pc)];
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = y_reg;
-    _AH = neartemp;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(y_reg, neartemp);
 
     pc++;
 }
 
 void cmp_C5(void) {
-    bbcuint flags;
     CLE;
     temp1 = RAM[getbyte(pc)];
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc++;
     update_dyn_p();
@@ -1171,26 +996,10 @@ void iny_C8(void) {
 }
 
 void cmp_C9(void) {
-    bbcuint flags;
     CLE;
     temp1 = getbyte(pc);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc++;
 }
@@ -1202,52 +1011,20 @@ void dex_CA(void) {
 }
 
 void cpy_CC(void) {
-    bbcuint flags;
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1));
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = y_reg;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(y_reg, temp1);
 
     pc += 2;
 
 }
 
 void cmp_CD(void) {
-    bbcuint flags;
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1));
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc += 2;
 }
@@ -1267,27 +1044,11 @@ void bne_D0(void) {
 }
 
 void cmp_D1(void) {
-    bbcuint flags;
     CLE;
     temp2 = getbyte(pc);
     temp1 = getbyte(RAM[temp2] + 0x100 * RAM[temp2 + 1] + y_reg);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc++;
 
@@ -1295,26 +1056,10 @@ void cmp_D1(void) {
 
 
 void cmp_D5(void) {
-    bbcuint flags;
     CLE;
     temp1 = RAM[(ubyte) (getbyte(pc) + x_reg)];
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc++;
 }
@@ -1332,51 +1077,19 @@ void cld_D8(void) {
 }
 
 void cmp_D9(void) {
-    bbcuint flags;
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + y_reg);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc += 2;
 }
 
 void cmp_DD(void) {
-    bbcuint flags;
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + x_reg);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(acc, temp1);
 
     pc += 2;
 }
@@ -1390,109 +1103,38 @@ void dec_DE(void) {
 }
 
 void cpx_E0(void) {
-    bbcuint flags;
     CLE;
     temp1 = getbyte(pc);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = x_reg;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(x_reg, temp1);
 
     pc++;
 }
 
 void sbc_E1(void) {
-    bbcuint flags;
-    bbcuint answer;
     CLE;
     temp2 = getbyte(pc) + x_reg;
     temp1 = getbyte(RAM[temp2] + 0x100 * RAM[(ubyte) (temp2 + 1)]);
 
-    asm_stub("push ax");
-    asm_stub("CLC");
-
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 1) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc++;
 }
 
 void cpx_E4(void) {
-    bbcuint flags;
     CLE;
     temp1 = RAM[getbyte(pc)];
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = x_reg;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(x_reg, temp1);
 
     pc++;
 }
 
 void sbc_E5(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
     temp1 = RAM[getbyte(pc)];
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 1) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc++;
 }
@@ -1512,29 +1154,10 @@ void inx_E8(void) {
 }
 
 void sbc_E9(void) {
-    bbcuint flags;
-    bbcuint answer;
     CLE;
     temp1 = getbyte(pc);
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 1) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc++;
 }
@@ -1543,26 +1166,10 @@ void nop_EA(void) {
 }
 
 void cpx_EC(void) {
-    bbcuint flags;
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1));
 
-    asm_stub("push ax");
-
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = x_reg;
-    _AH = temp1;
-
-    asm_stub("cmp AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("pop AX");
-
-    carry_f = (flags & 1) ^ 1;
-    result_f = flags & 0xC0;
-    result_f ^= 0x40;
+    do_cmp(x_reg, temp1);
 
     pc += 2;
 
@@ -1570,29 +1177,10 @@ void cpx_EC(void) {
 
 
 void sbc_ED(void) {
-    bbcuint flags;
-    bbcuint answer;
-
-    asm_stub("push ax");
     CLE;
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1));
 
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 1) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc += 2;
 }
@@ -1615,58 +1203,22 @@ void beq_F0(void) {
 }
 
 void sbc_F1(void) {
-    bbcuint flags;
-    bbcuint answer;
     CLE;
-    asm_stub("push ax");
 
     temp2 = getbyte(pc);
     temp1 = getbyte(RAM[temp2] + 0x100 * RAM[(ubyte) (temp2 + 1)] + y_reg);
 
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 0x01) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc++;
 }
 
 void sbc_F5(void) {
-    bbcuint flags;
-    bbcuint answer;
     CLE;
-    asm_stub("push ax");
 
     temp1 = RAM[(ubyte) (getbyte(pc) + x_reg)];
 
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 1) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc++;
 }
@@ -1685,58 +1237,21 @@ void sed_F8(void) {
 }
 
 void sbc_F9(void) {
-    bbcuint flags;
-    bbcuint answer;
     CLE;
-    asm_stub("push ax");
 
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + y_reg);
 
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 1) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc += 2;
 }
 
 void sbc_FD(void) {
-    bbcuint flags;
-    bbcuint answer;
-
     CLE;
-    asm_stub("push ax");
 
     temp1 = getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + x_reg);
 
-    asm_stub("CLC");
-    if (!carry_f) asm_stub("STC");
-
-    _AL = acc;
-    _AH = temp1;
-
-    asm_stub("sbb AL,AH");
-    asm_stub("pushf");
-    asm_stub("pop flags");
-    asm_stub("push AX");
-    asm_stub("pop answer");
-    asm_stub("pop AX");
-
-    result_f = acc = answer;
-    (flags & 0x800) ? (ovr_f = 1) : (ovr_f = 0);
-    carry_f = (flags & 1) ^ 1;
+    result_f = acc = do_sbc(acc, temp1, carry_f);
 
     pc += 2;
 }
