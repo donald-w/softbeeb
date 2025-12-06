@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Build the softbeeb emulator"
+        },
+        {
+            "label": "clean-build",
+            "type": "shell",
+            "command": "rm -rf build && cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug && cmake --build build",
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Clean and rebuild with debug symbols"
+        }
+    ]
+}
