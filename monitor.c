@@ -32,9 +32,9 @@ void monitor_call(void) {            // Is called when home is pressed
 }
 
 void monitor(void) {
-    uint init_colour;
-    uint c = 0;  // misc counters
-    uint d = 0;  // misc counters
+    bbcuint init_colour;
+    bbcuint c = 0;  // misc counters
+    bbcuint d = 0;  // misc counters
 
     init_colour = getcolor();
 
