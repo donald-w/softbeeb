@@ -6,14 +6,14 @@
 unsigned char lang_ROM[0x4000]; // reserve 16K for the language ROM data
 unsigned char OS_ROM[0x4000];   // reserve 16K for the OS_ROM data
 
-void (*screen_byte_P)(ubyte, uint);
+void (*screen_byte_P)(ubyte, bbcuint);
 
 
 /*
 This function is _always_ used to access an address unless it is in the
 zero page or the stack, then it may be directly accessed in the RAM[]
 */
-ubyte getbyte(uint address) {
+ubyte getbyte(bbcuint address) {
 
     if (address < 0x8000) return RAM[address];
     // If address is below the 32K mark access the RAM
@@ -35,7 +35,7 @@ known for certain to exist with the zeropage/stack range.
 (when it may be accessed directly through the RAM[]).
 */
 
-void putbyte(ubyte byte, uint address) {
+void putbyte(ubyte byte, bbcuint address) {
     if (address < 0x8000) {
         if (address >= ram_screen_start)  // if screen RAM
             screen_byte_P(byte, address); // output screen data
