@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <stdint.h>
 
-//  Placeholder for asm support
-extern void asm(char *);
+
 
 
 // Standard type definitions
 
 typedef uint8_t ubyte;
-typedef uint16_t uint;
+// macOS defines uint as unsigned int, so we use uint16_t for 16-bit addresses
+typedef uint16_t bbcuint;
 typedef int8_t sbyte;
 // __________________________
 
@@ -60,9 +60,9 @@ extern void gen_irq(void);
 
 // Video Output Control Functions / Data
 
-extern void (*screen_byte_P)(ubyte, uint);
+extern void (*screen_byte_P)(ubyte, bbcuint);
 
-extern void text_screen_byte(ubyte, uint);
+extern void text_screen_byte(ubyte, bbcuint);
 
 extern void teletext_init(void);
 
@@ -76,10 +76,10 @@ extern void set_screen_start(void);
 
 extern void (*update_screen)(void);
 
-extern uint ram_screen_start;
+extern bbcuint ram_screen_start;
 extern ubyte teletext;
 extern ubyte disp_chars;
-extern uint screen_start;
+extern bbcuint screen_start;
 extern ubyte vidpal[16];
 
 // ___________________________________-
@@ -87,9 +87,9 @@ extern ubyte vidpal[16];
 
 // Address Decoding Functions / Data
 
-extern ubyte getbyte(uint);
+extern ubyte getbyte(bbcuint);
 
-extern void putbyte(ubyte byte, uint address);
+extern void putbyte(ubyte byte, bbcuint address);
 
 extern void (*wsheila[256])(ubyte);
 
@@ -107,7 +107,7 @@ extern ubyte RAM[0x8000];          //
 extern ubyte OS_ROM[0x4000];       // Memory Arrays
 extern ubyte lang_ROM[0x4000];     //
 
-extern uint pc;                    //
+extern bbcuint pc;                    //
 extern ubyte acc;                  // 6502 Internal Registers
 extern ubyte x_reg;                //
 extern ubyte y_reg;                //
@@ -123,4 +123,3 @@ extern ubyte intd_f;               //
 extern ubyte carry_f;              //
 extern ubyte except;
 // _______________________
-
