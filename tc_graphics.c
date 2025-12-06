@@ -8,7 +8,7 @@ void putimage(int i, int i1, ubyte ram[], int i2) {
 
 }
 
-void putpixel(uint i, uint cord, int i1) {
+void putpixel(bbcuint i, bbcuint cord, int i1) {
 
 }
 
@@ -68,7 +68,7 @@ void setrgbpalette(int i, int i1, int i2, int i3) {
 
 }
 
-uint getcolor() {
+bbcuint getcolor() {
     return 0;
 }
 

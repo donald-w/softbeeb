@@ -1,6 +1,6 @@
 #include "tc_conio.h"
 
-void gotoxy(uint i, uint i1) {
+void gotoxy(bbcuint i, uint16_t i1) {
 
 }
 
