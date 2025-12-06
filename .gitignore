@@ -2,3 +2,8 @@ roms
 backup
 .idea
 output.dat
+data/BASIC.BIN
+data/COMAL.BIN
+data/OS.BIN
+.DS_Store
+build/
