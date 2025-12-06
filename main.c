@@ -18,7 +18,7 @@ Copyright Donald Walker
 */
 
 ubyte RAM[0x8000];             // the BBC's ram
-uint pc = 0xD9CD;                 // where the processor starts execution
+bbcuint pc = 0xD9CD;                 // where the processor starts execution
 
 ubyte acc = 0;               //
 ubyte x_reg = 0;             //  initialise registers.
@@ -44,7 +44,7 @@ ubyte except = 0;            // set for a negative zero condition
 
 
 int main() {
-    uint clock;                                // local clock counter
+    bbcuint clock;                                // local clock counter
     ubyte ir = 0;                                // holds current instruction
 
     system_init();                   // initialise everything.
