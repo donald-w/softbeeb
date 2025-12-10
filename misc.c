@@ -71,6 +71,7 @@ void show_regs(void)      // debugging procedure to display misc status
     fprintf(output, "id%dz%dc%d", intd_f == 0 ? 0 : 1, (except || result_f) ? 0 : 1, carry_f == 0 ? 0 : 1);
     fprintf(output, " %18s D=%2X%02X", mnemonic[getbyte(pc)], getbyte(pc + 2), getbyte(pc + 1));
     fprintf(output, " %02X", getbyte(pc));
+    fflush(output);
 }
 
 void show_screen(void)           // only used in the waitkey function

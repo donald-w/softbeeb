@@ -391,7 +391,7 @@ void and_39(void) {
 
 void and_3D(void) {
     CLE;
-    acc &= getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + y_reg);
+    acc &= getbyte(getbyte(pc) + 0x100 * getbyte(pc + 1) + x_reg);
 
     result_f = acc;
     pc += 2;
