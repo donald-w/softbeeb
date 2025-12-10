@@ -15,11 +15,11 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0")
 # Find SDL2
 find_package(SDL2 REQUIRED)
 
-include_directories(include ${SDL2_INCLUDE_DIRS})
+include_directories(include sdltest ${SDL2_INCLUDE_DIRS})
 
 set(SOURCE_FILES
         address.c
-        decodes.c
+        decodes_mac.c
         include/decode.h
         include/header.h
         include/mnemonic.h
@@ -42,6 +42,10 @@ set(SOURCE_FILES
         scroll.c
         sound.c
         tc_alloc.c
+        tc_bios.c
+        tc_conio.c
+        tc_dos.c
+        tc_graphics.c
         # Use SDL2 implementation instead of empty stubs
         sdltest/sdl_shim.c
 )
