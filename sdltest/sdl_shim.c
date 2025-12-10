@@ -4,10 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "tc_graphics.h"
-#include "tc_conio.h"
-#include "tc_dos.h"
-#include "tc_bios.h"
+#include "sdl_shim.h"
 
 // Basic SDL-backed shims to get keyboard, graphics, and sound working for tests.
 
@@ -30,7 +27,7 @@ static int g_quit_requested = 0;
 static int g_shift_down = 0;
 static int g_ctrl_down = 0;
 
-// Very small key queue to emulate kbhit/coniogetch/_bios_keybrd.
+// Very small key queue to emulate sdl_kbhit/sdl_coniogetch/sdl_bios_keybrd.
 #define KEY_QUEUE_SIZE 64
 static int g_key_queue[KEY_QUEUE_SIZE];
 static int g_key_head = 0;
@@ -171,7 +168,7 @@ static void pump_events(void) {
     }
 }
 
-void getimage(int x1, int y1, int x2, int y2, ubyte ram[]) {
+void sdl_getimage(int x1, int y1, int x2, int y2, ubyte ram[]) {
     ensure_video();
     if (!g_framebuffer) return;
     int w = x2 - x1 + 1;
@@ -192,11 +189,11 @@ void getimage(int x1, int y1, int x2, int y2, ubyte ram[]) {
     }
 }
 
-void putimage(int x1, int y1, ubyte ram[], int mode) {
+void sdl_putimage(int x1, int y1, ubyte ram[], int mode) {
     (void) mode;
     ensure_video();
     if (!g_framebuffer) return;
-    // Assumes buffer was filled by getimage: 4 bytes per pixel.
+    // Assumes buffer was filled by sdl_getimage: 4 bytes per pixel.
     int idx = 0;
     for (int y = y1; y < g_height && idx < g_width * g_height * 4; y++) {
         for (int x = x1; x < g_width && idx < g_width * g_height * 4; x++) {
@@ -211,7 +208,7 @@ void putimage(int x1, int y1, ubyte ram[], int mode) {
     update_texture();
 }
 
-void putpixel(uint16_t x, uint16_t y, int color) {
+void sdl_putpixel(uint16_t x, uint16_t y, int color) {
     ensure_video();
     if (!g_framebuffer) return;
     if ((int) x < 0 || (int) y < 0 || x >= (uint) g_width || y >= (uint) g_height) return;
@@ -228,58 +225,58 @@ void putpixel(uint16_t x, uint16_t y, int color) {
     }
 }
 
-void setgraphmode(int vgamed) {
+void sdl_setgraphmode(int vgamed) {
     (void) vgamed;
     ensure_video();
-    cleardevice();
+    sdl_cleardevice();
 }
 
-void restorecrtmode() {
+void sdl_restorecrtmode() {
     // Nothing special; keep window open.
 }
 
-void clrscr() {
-    cleardevice();
+void sdl_clrscr() {
+    sdl_cleardevice();
 }
 
-void textcolor(int c) {
+void sdl_textcolor(int c) {
     g_foreground = c & 0x0F;
 }
 
-void textbackground(int c) {
+void sdl_textbackground(int c) {
     g_background = c & 0x0F;
 }
 
-void textmode(int mode) {
+void sdl_textmode(int mode) {
     (void) mode;
 }
 
-int registerfarbgidriver(int farptr) {
+int sdl_registerfarbgidriver(int farptr) {
     (void) farptr;
     return 0;
 }
 
-void setpalette(ubyte logical, ubyte physical) {
+void sdl_setpalette(ubyte logical, ubyte physical) {
     if (logical > 15) return;
     g_palette[logical] = physical & 0x0F;
     g_rgba[logical] = ega_color_to_rgba(physical & 0x0F);
 }
 
-void setvisualpage(int page) {
+void sdl_setvisualpage(int page) {
     (void) page;
     update_texture();
 }
 
-void setactivepage(int page) {
+void sdl_setactivepage(int page) {
     (void) page;
 }
 
-void cprintf(char *string) {
+void sdl_cprintf(char *string) {
     printf("%s", string);
     fflush(stdout);
 }
 
-void closegraph() {
+void sdl_closegraph() {
     if (g_audio) {
         SDL_CloseAudioDevice(g_audio);
         g_audio = 0;
@@ -295,16 +292,16 @@ void closegraph() {
     SDL_Quit();
 }
 
-void initgraph(int *pInt, int *pInt1, char *string) {
+void sdl_initgraph(int *pInt, int *pInt1, char *string) {
     (void) pInt;
     (void) pInt1;
     (void) string;
     ensure_video();
     ensure_audio();
-    cleardevice();
+    sdl_cleardevice();
 }
 
-void setrgbpalette(int idx, int r, int g, int b) {
+void sdl_setrgbpalette(int idx, int r, int g, int b) {
     if (idx < 0 || idx > 15) return;
     uint32_t rr = (uint32_t) (r & 0x3F) * 4;
     uint32_t gg = (uint32_t) (g & 0x3F) * 4;
@@ -312,15 +309,15 @@ void setrgbpalette(int idx, int r, int g, int b) {
     g_rgba[idx] = 0xFF000000 | (rr << 16) | (gg << 8) | bb;
 }
 
-uint16_t getcolor() {
-    return (uint16_t) g_foreground;
+bbcuint sdl_getcolor() {
+    return (bbcuint) g_foreground;
 }
 
-void setbkcolor(int c) {
+void sdl_setbkcolor(int c) {
     g_background = c & 0x0F;
 }
 
-void cleardevice() {
+void sdl_cleardevice() {
     ensure_video();
     if (!g_framebuffer) return;
     ubyte physical = g_palette[g_background & 0x0F];
@@ -331,31 +328,31 @@ void cleardevice() {
     update_texture();
 }
 
-void settextstyle(int font, int dir, int size) {
+void sdl_settextstyle(int font, int dir, int size) {
     (void) font;
     (void) dir;
     (void) size;
 }
 
-void setcolor(int c) {
+void sdl_setcolor(int c) {
     g_foreground = c & 0x0F;
 }
 
-void outtextxy(int x, int y, char *string) {
+void sdl_outtextxy(int x, int y, char *string) {
     (void) x;
     (void) y;
-    cprintf(string);
-    cprintf("\n");
+    sdl_cprintf(string);
+    sdl_cprintf("\n");
 }
 
 // ---------- conio ----------
 
-void gotoxy(uint16_t x, uint16_t y) {
+void sdl_gotoxy(uint16_t x, uint16_t y) {
     g_cursor_x = (int) x;
     g_cursor_y = (int) y;
 }
 
-void putch(ubyte ch) {
+void sdl_putch(ubyte ch) {
     // Basic cursor-less console output.
     (void) g_cursor_x;
     (void) g_cursor_y;
@@ -363,23 +360,23 @@ void putch(ubyte ch) {
     fflush(stdout);
 }
 
-int coniogetch() {
+int sdl_coniogetch() {
     pump_events();
     return pop_key();
 }
 
-int kbhit(void) {
+int sdl_kbhit(void) {
     pump_events();
     return queue_size() > 0;
 }
 
-void _setcursortype(int cursortype) {
+void sdl_setcursortype(int cursortype) {
     (void) cursortype;
 }
 
 // ---------- BIOS / DOS ----------
 
-ubyte _bios_keybrd(int shiftstatus) {
+ubyte sdl_bios_keybrd(int shiftstatus) {
     pump_events();
     switch (shiftstatus) {
         case _KEYBRD_SHIFTSTATUS:
@@ -392,27 +389,27 @@ ubyte _bios_keybrd(int shiftstatus) {
     }
 }
 
-void nosound() {
+void sdl_nosound() {
     ensure_audio();
     g_tone_freq = 0.0;
 }
 
-void sound(double totfreq) {
+void sdl_sound(double totfreq) {
     ensure_audio();
     g_tone_freq = totfreq;
 }
 
-void delay(int ms) {
+void sdl_delay(int ms) {
     SDL_Delay((Uint32) ms);
 }
 
-char peekb(int segment, int offset) {
+char sdl_peekb(int segment, int offset) {
     (void) segment;
     (void) offset;
     return 0;
 }
 
-void pokeb(int segment, int offset, char value) {
+void sdl_pokeb(int segment, int offset, char value) {
     (void) segment;
     (void) offset;
     (void) value;

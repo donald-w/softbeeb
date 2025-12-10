@@ -2,35 +2,29 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "tc_graphics.h"
-#include "tc_conio.h"
-#include "tc_dos.h"
-#include "tc_bios.h"
-
-// Helper exported by the shim to let us exit on SDL_QUIT.
-int sdl_quit_requested(void);
+#include "sdl_shim.h"
 
 static void draw_demo(void) {
     // Simple gradient and a moving box.
     for (int y = 0; y < 200; y++) {
         for (int x = 0; x < 320; x++) {
             int color = (x / 20 + y / 20) % 16;
-            putpixel((uint16_t) (x * 2), (uint16_t) (y * 2), color);
-            putpixel((uint16_t) (x * 2 + 1), (uint16_t) (y * 2), color);
-            putpixel((uint16_t) (x * 2), (uint16_t) (y * 2 + 1), color);
-            putpixel((uint16_t) (x * 2 + 1), (uint16_t) (y * 2 + 1), color);
+            sdl_putpixel((uint16_t) (x * 2), (uint16_t) (y * 2), color);
+            sdl_putpixel((uint16_t) (x * 2 + 1), (uint16_t) (y * 2), color);
+            sdl_putpixel((uint16_t) (x * 2), (uint16_t) (y * 2 + 1), color);
+            sdl_putpixel((uint16_t) (x * 2 + 1), (uint16_t) (y * 2 + 1), color);
         }
     }
-    setvisualpage(0);
+    sdl_setvisualpage(0);
 }
 
 int main(void) {
     int driver = VGA;
     int mode = VGAMED;
 
-    initgraph(&driver, &mode, "");
-    setgraphmode(VGAMED);
-    cleardevice();
+    sdl_initgraph(&driver, &mode, "");
+    sdl_setgraphmode(VGAMED);
+    sdl_cleardevice();
     draw_demo();
 
     printf("sdltest: press 's' to play tone, 'x' to stop, 'q' to quit.\n");
@@ -40,11 +34,11 @@ int main(void) {
     uint16_t last_tick = (uint16_t) clock();
 
     while (!sdl_quit_requested()) {
-        if (kbhit()) {
-            int c = coniogetch();
+        if (sdl_kbhit()) {
+            int c = sdl_coniogetch();
             if (c == 'q') break;
-            if (c == 's') sound(440.0);
-            if (c == 'x') nosound();
+            if (c == 's') sdl_sound(440.0);
+            if (c == 'x') sdl_nosound();
         }
 
         // Animate a small square.
@@ -53,16 +47,16 @@ int main(void) {
             last_tick = now;
             for (int y = 220; y < 240; y++) {
                 for (int x = 0; x < 40; x++) {
-                    putpixel((uint16_t) ((pos + x) % 640), (uint16_t) y, box_color);
+                    sdl_putpixel((uint16_t) ((pos + x) % 640), (uint16_t) y, box_color);
                 }
             }
             pos = (pos + 4) % 640;
-            setvisualpage(0);
+            sdl_setvisualpage(0);
         }
-        delay(1);
+        sdl_delay(1);
     }
 
-    nosound();
-    closegraph();
+    sdl_nosound();
+    sdl_closegraph();
     return 0;
 }
