@@ -24,7 +24,7 @@ ubyte getbyte(bbcuint address) {
     if ((address > 0xFEFF) || (address < 0xFC00)) return OS_ROM[address - 0xC000];
     // If address is outside the 3 pages of memmapped io,
     // access the OS_ROM
-    return ((address & 0xFF00) == 0xFE00) ? rsheila[(char) (address)]() : (ubyte) 0xff;
+    return ((address & 0xFF00) == 0xFE00) ? rsheila[(ubyte) (address)]() : (ubyte) 0xff;
 
 }                    // the address must be in the 3 pages of memmapped io.
 
@@ -43,7 +43,7 @@ void putbyte(ubyte byte, bbcuint address) {
         RAM[address] = byte;              // update RAM
     }
 
-    else if ((address & 0xFF00) == 0xFE00) wsheila[(char) (address)](byte);
+    else if ((address & 0xFF00) == 0xFE00) wsheila[(ubyte) (address)](byte);
 
     else if ((address < 0xFC00) || (address > 0xFEFF)) {
         // Since this is an impossible situation, a crash probably has occured
