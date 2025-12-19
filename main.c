@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "header.h"
 #include "io.h"
 #include "reg_name.h"
@@ -46,6 +47,7 @@ ubyte except = 0;            // set for a negative zero condition
 int main() {
     bbcuint clock;                                // local clock counter
     ubyte ir = 0;                                // holds current instruction
+    long ins = 0;
 
     system_init();                   // initialise everything.
 
@@ -55,6 +57,15 @@ int main() {
         decode[ir]();              // decode and execute the instructon
 
         show_regs();
+
+        // if (++ins >= 171699) {
+        //     puts("\nInstruction limit reached, terminating");
+        //     exit(1);
+        // }
+
+        // if (ins == 165233L) {
+        //     puts("Breakpoint reached at 165234 instructions");
+        // }
 
         if (!clock)                // if an interrupt is due
         {
